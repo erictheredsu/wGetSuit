@@ -24,7 +24,7 @@ bool checkFileExist(const string filename)
 }
 
 
-int checklist(int lastNumber, string urlPath, string ext)
+int checklist(int startNumber, int lastNumber, string urlPath, string ext)
 {
 	string galleryNum;
 
@@ -43,7 +43,7 @@ int checklist(int lastNumber, string urlPath, string ext)
 	string path = "." + sep + "i.nhentai.net" + sep + "galleries" +sep + galleryNum + sep;
 	string fileName;
 	bool bAllExist = true;
-	for (int i = 1; i <= lastNumber; i++) 
+	for (int i = startNumber; i <= lastNumber; i++)
 	{
 		fileName = path + std::to_string(i) + "." + ext;
 		if (!checkFileExist(fileName))
@@ -65,10 +65,12 @@ int main(int argc, char* argv[])
 {
 	// handle args
 	int counter;
-	if (argc < 3)
+	if (argc < 4 || argc > 5)
 	{
-		cout << "Wrong input parameters: " << argc << " expected: 3 or 4"<< endl;
-		cout << "usage: "<< argv[0] << " URL LastNumber isChecklist(Y/N)" << endl;
+		cout << "Wrong input parameters: " << argc << " expected parameter number: 4 or 5"<< endl;
+		cout << "usage: check files list range" << argv[0] << " URL startNumber endNumber " << endl;
+		cout << "usage: check files exist" << argv[0] << " URL startNumber LastNumber check" << endl;
+
 		return 0;
 	}
 	else
@@ -80,8 +82,8 @@ int main(int argc, char* argv[])
 		cout << endl;
 	}
 
+	//handle url
 	string url = argv[1];
-	int lastNumber = atoi(argv[2]);
 	string path;
 	string ext;
 
@@ -107,17 +109,20 @@ int main(int argc, char* argv[])
 		cout << "wrong url ext format" << endl;
 	}
 
-	if (argc == 4 && (argv[3][0] == 'Y' || argv[3][0] == 'y'))
+	int startNumber = atoi(argv[2]);
+	int endNumber = atoi(argv[3]);
+
+	if (argc == 5 && (argv[4][0] == 'C' || argv[4][0] == 'c'))
 	{
 		cout << "check files exist" << endl;
-		return checklist(lastNumber ,path, ext);
+		return checklist(startNumber, endNumber, path, ext);
 	}
-	else
+	else // argc ==4
 	{
 
 		std::ofstream outfile("filelist.txt", std::ofstream::out | std::ofstream::trunc);
 
-		for (int i = 1; i <= lastNumber; i++)
+		for (int i = startNumber; i <= endNumber; i++)
 		{
 			outfile << path << "/" << i << "." << ext << endl;
 		}
