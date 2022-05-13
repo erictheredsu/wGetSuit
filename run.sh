@@ -14,7 +14,7 @@
 ./wGetListGen $1 $2
 
 #download
-wget -i filelist.txt -o log.txt -p 
+wget -i filelist.txt -o log.txt -p -P Author_Unknown
 
 #check file list 
 ./wGetListGen $1 $2 Y

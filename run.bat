@@ -24,7 +24,7 @@ rem create filelist.txt
 wGetListGen.exe %1 %startNumber% %lastNumber%
 
 rem download
-wget -i filelist.txt -o log.txt -p 
+wget -i filelist.txt -o log.txt -p -P Author_Unknown
 
 rem check file
 wGetListGen.exe %1 %startNumber% %lastNumber% check

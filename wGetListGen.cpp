@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <vector>
 using namespace std;
 
 inline char separator()
@@ -23,24 +24,55 @@ bool checkFileExist(const string filename)
 	return isExist;
 }
 
+ void splitPath(string s, vector<string> &vect)
+{
+	 std::string delimiter = "/";
+
+	 size_t pos = 0;
+	 std::string token;
+	 while ((pos = s.find(delimiter)) != std::string::npos) {
+		 token = s.substr(0, pos);
+		 //std::cout << token << std::endl;
+		 if (token.length() > 0)
+		 {
+			 vect.push_back(token);
+		 }
+		 s.erase(0, pos + delimiter.length());
+	 }
+	 vect.push_back(s); //add left part;
+}
+
 
 int checklist(int startNumber, int lastNumber, string urlPath, string ext)
 {
-	string galleryNum;
+	//string galleryNum;
 
-	std::size_t path_sep = urlPath.find_last_of("/\\");
-	if (path_sep > 0)
+	//std::size_t path_sep = urlPath.find_last_of("/\\");
+	//if (path_sep > 0)
+	//{
+	//	galleryNum = urlPath.substr(path_sep+1);
+	//	//cout << endl << path << endl;
+	//	return 0;
+	//}
+	//else
+	//{
+	//	cout << "wrong url gallery number format" << endl;
+	//	return 0;
+	//}
+
+	vector<string> vect;
+	splitPath(urlPath, vect);
+	if (vect.size() == 0)
 	{
-		galleryNum = urlPath.substr(path_sep+1);
-		//cout << endl << path << endl;
+		cout << "parse url fail!" << endl;
+		return 0;
 	}
-	else
-	{
-		cout << "wrong url gallery number format" << endl;
-	}
+
 
 	string sep (1, separator());
-	string path = "." + sep + "i.nhentai.net" + sep + "galleries" +sep + galleryNum + sep;
+	//string path = "." + sep + "i.nhentai.net" + sep + "galleries" +sep + galleryNum + sep;
+	string path = "." + sep + "Author_Unknown" + sep + vect[1] + sep +vect[2] + sep + vect[3] + sep;
+
 	string fileName;
 	bool bAllExist = true;
 	for (int i = startNumber; i <= lastNumber; i++)
